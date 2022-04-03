@@ -1,0 +1,128 @@
+@import url('./styleConfig.css');
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: white;
+}
+
+.container-form {
+
+    width: 400px;
+    min-height: 300px;
+    background-color: antiquewhite;
+    padding: 40px 45px;
+    box-shadow: 10px 10px 10px lightgray;
+    border-radius: 10px;
+    position: relative;
+}
+
+h1 {
+    text-align: center;
+    color: var(--color-texto);
+    font-size: 1.8rem;
+}
+
+.item-enviar {
+    display: flex;
+
+}
+
+#input-lista {
+    border: 1px solid var(--color-btn);
+    background-color: transparent;
+    border-radius: 4px;
+    width: 100%;
+    font-size: 18px;
+    font-family: var(--font-family);
+    padding: 4px 8px;
+    height: 20px;
+
+    color: var(--color-grafite);
+
+}
+
+#input-lista:focus {
+    border: 1px solid var(--color-btn-forte);
+    outline: none;
+}
+
+#button-lista {
+    border: none;
+    background-color: var(--color-btn);
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: var(--font-family);
+    color: var(--color-grafite);
+
+    cursor: pointer;
+}
+
+.container-lista {
+    margin-top: 30px;
+}
+
+
+.item-lista {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 15px;
+    margin: 8px 0;
+    border-radius: 10px;
+    transition: 0.2s;
+
+}
+
+.item-lista:hover {
+    background-color: rgba(0, 0, 0, .1);
+
+}
+
+.item-nome {
+    color: var(--color-grafite);
+}
+
+.item-nome::before {
+    content: '- ';
+}
+
+.item-controles {
+
+    width: 40px;
+    display: flex;
+    justify-content: space-between;
+    color: var(--color-grafite);
+    cursor: pointer;
+
+}
+
+.container-clear {
+    display: flex;
+    justify-content: center;
+
+
+}
+
+.container-clear>button {
+    position: absolute;
+    bottom: 15px;
+    border: 1px solid #f08080;
+    padding: 5px 25px;
+    height: 30px;
+    background: transparent;
+    color: lightcoral;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: 0.2s;
+    font-weight: 700;
+
+    font-family: var(--font-family);
+}
+
+.container-clear>button:hover {
+    background-color: lightcoral;
+    color: white;
+}
