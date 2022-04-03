@@ -4,29 +4,34 @@ import geraId from "react-id-generator";
 import '../style/ListaMercado.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
-import { faTrashCan, faEdit } from '@fortawesome/free-regular-svg-icons'
+import { faTrashCan, faEdit, faCopy } from '@fortawesome/free-regular-svg-icons'
 
 
 function ListaMercado() {
     const listaInicial = [];
     const [texto, setTexto] = useState('');
     const [lista, setLista] = useState(listaInicial);
+    const [indexEdit, setIndexEdit] = useState();
+
     const input = document.querySelector('#input-lista');
     const btn = document.querySelector('#button-lista');
-    const [indexEdit, setIndexEdit] = useState();
+    const spanBtnCopiar = document.querySelector(".btn-copiar span");
+
     useEffect(() => {
         // console.log(lista)
-    }, [indexEdit])
+    }, [lista])
     function pegaValor(e) {
         setTexto(e.target.value);
+        // localStorage.teste = 1;
     }
-    function btnClicado(e) {
-        e.preventDefault();
+
+    function btnClicado() {
+
         // Ve se tem valor para ser editado, se tiver ele faz essa condição
         if (indexEdit || indexEdit == 0) {
             lista.splice(indexEdit, 1, { nome: texto, id: geraId() });
             setIndexEdit();
-            btn.innerText = "Editar";
+            btn.innerText = "Enviar";
             input.value = "";
             setTexto('');
             return;
@@ -60,7 +65,7 @@ function ListaMercado() {
     }
     function editarItem(item) {
         // console.log(item);
-        const index = lista.findIndex((element) => element.nome == item.nome && element.id == item.id);
+        const index = lista.findIndex((element) => element.nome === item.nome && element.id == item.id);
         setIndexEdit(index);
         btn.innerText = "Mudar";
         setTexto(item.nome);
@@ -75,9 +80,34 @@ function ListaMercado() {
             setTexto('');
         }
     }
+    function copiarLista() {
+        let listaParaCopia = "";
+        lista.forEach((item, index) => {
+            if (lista.length == index + 1) {
+                // Ultimo item ele tira a virgula 
+                listaParaCopia = listaParaCopia + "-" + `${index + 1} ` + `${item.nome} `;
+
+            } else {
+                listaParaCopia = listaParaCopia + "-" + `${index + 1} ` + `${item.nome} , `;
+            }
+        })
+        navigator.clipboard.writeText(listaParaCopia);
+
+        spanBtnCopiar.innerText = " copiado!";
+        setTimeout(() => {
+            spanBtnCopiar.innerText = "";
+        }, 2000)
+
+    }
     return (
         <div className='container'>
             <div className="container-form">
+                <div className='container-copiar'>
+                    <div className="btn-copiar" onClick={copiarLista}>
+                        <FontAwesomeIcon icon={faCopy} />
+                        <span></span>
+                    </div>
+                </div>
                 <h1>Lista de Mercado</h1>
                 <div className='item-enviar'>
                     <input id="input-lista" onChange={(e) => {
@@ -111,7 +141,7 @@ function ListaMercado() {
                 </div>
             </div>
 
-        </div>
+        </div >
     );
 };
 export default ListaMercado;
