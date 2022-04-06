@@ -1,5 +1,4 @@
 import { React, useState, useEffect } from 'react';
-// Importei gerador de id  
 import geraId from "react-id-generator";
 import '../style/ListaMercado.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -12,73 +11,125 @@ function ListaMercado() {
     const [texto, setTexto] = useState('');
     const [lista, setLista] = useState(listaInicial);
     const [indexEdit, setIndexEdit] = useState();
+    const [id, setId] = useState();
+
+    const [listaLocationStorageState, setlistaLocationStorageState] = useState(listaInicial);
 
     const input = document.querySelector('#input-lista');
     const btn = document.querySelector('#button-lista');
     const spanBtnCopiar = document.querySelector(".btn-copiar span");
 
     useEffect(() => {
-        // console.log(lista)
-    }, [lista])
+        // Primeira vez que uma pessoa entra no site, ele seta o localstorage lista
+        if (!localStorage.getItem('lista')) {
+            localStorage.setItem('lista', "[]");
+        }
+        // Puxa os valores do localStorage e seta na lista
+        const itens = JSON.parse(localStorage.getItem('lista'));
+        setLista(itens);
+        // Verifica se o tamanho dos itens vindo do localStorage 
+        if (itens.length == 0) {
+            // Se não tiver 
+            setId(1);
+        } else {
+            // Retorna só os ids 
+            const idsItens = itens.map((item) => {
+                return item.id;
+            });
+
+            // Pega o ultimo valor dos ids
+            const ultimoId = idsItens[idsItens.length - 1];
+            //Pega o ultimo Id e acrescenta 1 
+            setId(ultimoId + 1);
+
+        }
+
+
+
+    }, [listaLocationStorageState]);
+
+
+
+    // Pega LocalStorage e seta na lista
+    // useEffect(() => {
+    //     // Quando tem uma alteração no localstorage ele ativa isso
+    //     let items = JSON.parse(localStorage.getItem('lista'));
+    //     setLista(items);
+    // }, []);
+
     function pegaValor(e) {
         setTexto(e.target.value);
-        // localStorage.teste = 1;
+
     }
 
     function btnClicado() {
 
         // Ve se tem valor para ser editado, se tiver ele faz essa condição
-        if (indexEdit || indexEdit == 0) {
-            lista.splice(indexEdit, 1, { nome: texto, id: geraId() });
-            setIndexEdit();
-            btn.innerText = "Enviar";
-            input.value = "";
-            setTexto('');
-            return;
-        }
-        //  Seta o valor na lista e depois apaga ele
-        if (texto.length > 0) {
-            setLista([...lista,
+        // if (indexEdit || indexEdit == 0) {
+        //     lista.splice(indexEdit, 1, { nome: texto, id: geraId() });
+        //     setIndexEdit();
+        //     btn.innerText = "Enviar";
+        //     input.value = "";
+        //     setTexto('');
+        //     return;
+        // }
+
+        setaNoLocalStorageOItem();
+        input.value = "";
+        setTexto('');
+
+
+    }
+    function setaNoLocalStorageOItem() {
+        if (input.value.length) {
+            const parseLista = JSON.parse(localStorage.lista);
+            localStorage.lista = JSON.stringify([...parseLista,
             {
                 nome: texto,
-                id: geraId()
+                id: id
             }
             ]);
-            input.value = "";
-            setTexto('');
+
+            setlistaLocationStorageState(parseLista);
 
         }
 
     }
 
     function apagaItem(idItem) {
-
-        setLista(lista.filter((item) => {
+        const parseLista = JSON.parse(localStorage.lista);
+        const listaItemApagado = parseLista.filter((item) => {
             //Se o id for igual ao Id clicado, ele nao retorna ele
             // Se nao for igual, ele retorna normalmente
             if (item.id == idItem) {
                 return;
             }
             return item;
-        }))
+        });
+
+        localStorage.lista = JSON.stringify(listaItemApagado);
+        setlistaLocationStorageState(listaItemApagado);
+
 
     }
     function editarItem(item) {
-        // console.log(item);
-        const index = lista.findIndex((element) => element.nome === item.nome && element.id == item.id);
-        setIndexEdit(index);
-        btn.innerText = "Mudar";
-        setTexto(item.nome);
-        input.value = item.nome;
+        // const index = lista.findIndex((element) => element.nome === item.nome && element.id == item.id);
+        // setIndexEdit(index);
+        // btn.innerText = "Mudar";
+        // setTexto(item.nome);
+        // input.value = item.nome;
 
 
     }
     function apagarTudo() {
-        if (lista.length > 0) {
-            setLista(listaInicial);
-            input.value = "";
-            setTexto('');
-        }
+
+        localStorage.lista = "[]";
+        setlistaLocationStorageState(listaInicial);
+
+        input.value = "";
+        setTexto('');
+
+
     }
     function copiarLista() {
         let listaParaCopia = "";
@@ -98,8 +149,7 @@ function ListaMercado() {
             spanBtnCopiar.innerText = "";
         }, 2000)
 
-    }
-    return (
+    } return (
         <div className='container'>
             <div className="container-form">
                 <div className='container-copiar'>
@@ -116,7 +166,7 @@ function ListaMercado() {
                     <button id="button-lista" onClick={btnClicado}>Enviar</button>
                 </div>
                 <div className="container-lista">
-                    {lista.map((item, key) => {
+                    {lista.length ? lista.map((item, key) => {
                         return (
                             <div className='item-lista' key={key}>
                                 <span className='item-nome'>
@@ -132,7 +182,12 @@ function ListaMercado() {
                                 </div>
                             </div>
                         );
-                    })}
+                    }) :
+                        <div className="container-no-itens">
+                            <span> Sem Itens! </span>
+                        </div>
+
+                    }
 
 
                     <div className='container-clear'>

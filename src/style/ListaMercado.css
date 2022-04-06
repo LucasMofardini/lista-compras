@@ -59,6 +59,7 @@ h1 {
     color: var(--color-grafite);
 
     cursor: pointer;
+    user-select: none;
 }
 
 .container-lista {
@@ -151,4 +152,16 @@ h1 {
 .btn-copiar span {
     font-size: 14px;
     font-weight: 100;
+}
+
+.container-no-itens {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    user-select: none;
+}
+
+.container-no-itens span {
+    color: rgba(0, 0, 0, 0.6);
+    font-family: var(--font-family);
 }
