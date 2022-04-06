@@ -13,7 +13,7 @@ function ListaMercado() {
     const [indexEdit, setIndexEdit] = useState();
     const [id, setId] = useState();
 
-    const [listaLocationStorageState, setlistaLocationStorageState] = useState(listaInicial);
+    const [listaLocalStorageState, setlistaLocalStorageState] = useState(listaInicial);
 
     const input = document.querySelector('#input-lista');
     const btn = document.querySelector('#button-lista');
@@ -46,7 +46,7 @@ function ListaMercado() {
 
 
 
-    }, [listaLocationStorageState]);
+    }, [listaLocalStorageState]);
 
 
 
@@ -90,7 +90,7 @@ function ListaMercado() {
             }
             ]);
 
-            setlistaLocationStorageState(parseLista);
+            setlistaLocalStorageState(parseLista);
 
         }
 
@@ -108,7 +108,7 @@ function ListaMercado() {
         });
 
         localStorage.lista = JSON.stringify(listaItemApagado);
-        setlistaLocationStorageState(listaItemApagado);
+        setlistaLocalStorageState(listaItemApagado);
 
 
     }
@@ -124,7 +124,7 @@ function ListaMercado() {
     function apagarTudo() {
 
         localStorage.lista = "[]";
-        setlistaLocationStorageState(listaInicial);
+        setlistaLocalStorageState(listaInicial);
 
         input.value = "";
         setTexto('');
