@@ -1,5 +1,4 @@
 import { React, useState, useEffect } from 'react';
-import geraId from "react-id-generator";
 import '../style/ListaMercado.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
@@ -28,7 +27,7 @@ function ListaMercado() {
         const itens = JSON.parse(localStorage.getItem('lista'));
         setLista(itens);
         // Verifica se o tamanho dos itens vindo do localStorage 
-        if (itens.length == 0) {
+        if (itens.length === 0) {
             // Se não tiver 
             setId(1);
         } else {
@@ -37,8 +36,9 @@ function ListaMercado() {
                 return item.id;
             });
 
-            // Pega o ultimo valor dos ids
-            const ultimoId = idsItens[idsItens.length - 1];
+            // Pega o maior valor do array de ids
+            const ultimoId = Math.max(...idsItens);
+            console.log(ultimoId);
             //Pega o ultimo Id e acrescenta 1 
             setId(ultimoId + 1);
 
@@ -49,14 +49,6 @@ function ListaMercado() {
     }, [listaLocalStorageState]);
 
 
-
-    // Pega LocalStorage e seta na lista
-    // useEffect(() => {
-    //     // Quando tem uma alteração no localstorage ele ativa isso
-    //     let items = JSON.parse(localStorage.getItem('lista'));
-    //     setLista(items);
-    // }, []);
-
     function pegaValor(e) {
         setTexto(e.target.value);
 
@@ -65,14 +57,26 @@ function ListaMercado() {
     function btnClicado() {
 
         // Ve se tem valor para ser editado, se tiver ele faz essa condição
-        // if (indexEdit || indexEdit == 0) {
-        //     lista.splice(indexEdit, 1, { nome: texto, id: geraId() });
-        //     setIndexEdit();
-        //     btn.innerText = "Enviar";
-        //     input.value = "";
-        //     setTexto('');
-        //     return;
-        // }
+        if (indexEdit || indexEdit === 0) {
+            // Transforma os valores salvos no localStorage em objeto js
+            const parseLista = JSON.parse(localStorage.lista);
+            // Pega o Index do item a ser alterado e coloca o novo objeto nele
+            parseLista.splice(indexEdit, 1, {
+                nome: texto,
+                id: id
+            });
+            // Coloca novamente no localStorage
+            localStorage.lista = JSON.stringify(parseLista);
+            // Seta na lista do local storage
+            setlistaLocalStorageState(parseLista);
+
+            // Reseta os campos
+            setIndexEdit();
+            btn.innerText = "Enviar";
+            input.value = "";
+            setTexto('');
+            return;
+        }
 
         setaNoLocalStorageOItem();
         input.value = "";
@@ -101,8 +105,8 @@ function ListaMercado() {
         const listaItemApagado = parseLista.filter((item) => {
             //Se o id for igual ao Id clicado, ele nao retorna ele
             // Se nao for igual, ele retorna normalmente
-            if (item.id == idItem) {
-                return;
+            if (item.id === idItem) {
+                return null;
             }
             return item;
         });
@@ -113,11 +117,17 @@ function ListaMercado() {
 
     }
     function editarItem(item) {
-        // const index = lista.findIndex((element) => element.nome === item.nome && element.id == item.id);
-        // setIndexEdit(index);
-        // btn.innerText = "Mudar";
-        // setTexto(item.nome);
-        // input.value = item.nome;
+        const index = lista.findIndex((element) => {
+            return element.id === item.id;
+        }
+        );
+        // console.log(item);
+
+        setIndexEdit(index);
+
+        btn.innerText = "Mudar";
+        setTexto(item.nome);
+        input.value = item.nome;
 
 
     }
@@ -134,12 +144,12 @@ function ListaMercado() {
     function copiarLista() {
         let listaParaCopia = "";
         lista.forEach((item, index) => {
-            if (lista.length == index + 1) {
+            if (lista.length === index + 1) {
                 // Ultimo item ele tira a virgula 
-                listaParaCopia = listaParaCopia + "-" + `${index + 1} ` + `${item.nome} `;
+                listaParaCopia = listaParaCopia + "-" + (index + 1) + " " + (item.nome) + ".";
 
             } else {
-                listaParaCopia = listaParaCopia + "-" + `${index + 1} ` + `${item.nome} , `;
+                listaParaCopia = listaParaCopia + "-" + (index + 1) + " " + (item.nome) + ", ";
             }
         })
         navigator.clipboard.writeText(listaParaCopia);
