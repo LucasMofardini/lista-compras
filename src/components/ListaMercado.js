@@ -38,7 +38,6 @@ function ListaMercado() {
 
             // Pega o maior valor do array de ids
             const ultimoId = Math.max(...idsItens);
-            console.log(ultimoId);
             //Pega o ultimo Id e acrescenta 1 
             setId(ultimoId + 1);
 
@@ -121,7 +120,6 @@ function ListaMercado() {
             return element.id === item.id;
         }
         );
-        // console.log(item);
 
         setIndexEdit(index);
 
