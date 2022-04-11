@@ -222,10 +222,6 @@ h1 {
         height: auto;
     }
 
-    .container-form {
-        border-radius: 0;
-    }
-
     .container-lista {
         margin: 10px 0 5px 0;
     }
@@ -239,7 +235,14 @@ h1 {
         width: calc(100%/2.5);
     }
 
-    .item-lista:hover .item-controles,
+    .item-controles {
+        display: none;
+        visibility: hidden;
+
+        transition: 0.2s;
+    }
+
+    /* .item-lista:hover .item-controles,
     .item-lista:active .item-controles {
         display: flex;
         visibility: visible;
@@ -251,8 +254,13 @@ h1 {
         height: 100%;
         margin-top: -10px;
 
+    } */
 
+
+}
+
+@media(max-width:400px) {
+    .container-form {
+        border-radius: 0;
     }
-
-
 }
