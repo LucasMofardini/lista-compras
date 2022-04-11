@@ -177,7 +177,9 @@ function ListaMercado() {
                     {lista.length ? lista.map((item, key) => {
                         return (
                             <div className='item-lista' key={key}>
+
                                 <span className='item-nome'>
+
                                     {item.nome}
                                 </span>
                                 <div className='item-controles'>
@@ -198,9 +200,10 @@ function ListaMercado() {
                     }
 
 
-                    <div className='container-clear'>
-                        <button onClick={apagarTudo}>Limpar Tudo</button>
-                    </div>
+
+                </div>
+                <div className='container-clear'>
+                    <button onClick={apagarTudo}>Limpar Tudo</button>
                 </div>
             </div>
 

@@ -27,10 +27,12 @@ h1 {
 
 .item-enviar {
     display: flex;
+    justify-content: center;
 
 }
 
 #input-lista {
+    width: calc(100% - 50px);
     border: 1px solid var(--color-btn);
     background-color: transparent;
     border-radius: 4px;
@@ -75,6 +77,7 @@ h1 {
     border-radius: 10px;
     transition: 0.2s;
 
+
 }
 
 .item-lista:hover {
@@ -84,7 +87,10 @@ h1 {
 
 .item-nome {
     color: var(--color-grafite);
+    word-break: break-word;
 }
+
+
 
 .item-nome::before {
     content: '- ';
@@ -164,4 +170,89 @@ h1 {
 .container-no-itens span {
     color: rgba(0, 0, 0, 0.6);
     font-family: var(--font-family);
+}
+
+
+
+/* Itens em coluna */
+
+.container-lista {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.item-lista {
+    width: calc(100%/3.9);
+    position: relative;
+}
+
+.item-controles {
+    display: none;
+    visibility: hidden;
+
+    transition: 0.2s;
+}
+
+.item-controles>svg {
+    margin: 0 2.5px;
+}
+
+.item-lista:hover .item-controles,
+.item-lista:active .item-controles {
+    display: flex;
+    visibility: visible;
+    justify-content: flex-end;
+    align-items: center;
+    position: absolute;
+    width: 85%;
+    height: 100%;
+    margin-top: -10px;
+    right: 5px;
+
+}
+
+.item-lista:hover .item-nome {
+    color: rgba(0, 0, 0, 0.6);
+}
+
+@media(max-width:800px) {
+    .container {
+        height: auto;
+    }
+
+    .container-form {
+        border-radius: 0;
+    }
+
+    .container-lista {
+        margin: 10px 0 5px 0;
+    }
+
+    .container-form {
+        padding: 15px 25px;
+
+    }
+
+    .item-lista {
+        width: calc(100%/2.5);
+    }
+
+    .item-lista:hover .item-controles,
+    .item-lista:active .item-controles {
+        display: flex;
+        visibility: visible;
+
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        width: 85%;
+        height: 100%;
+        margin-top: -10px;
+
+
+    }
+
+
 }
