@@ -43,8 +43,10 @@ function ListaMercado() {
 
         }
 
-
-
+        // Verifica se tem mais de 25 itens
+        // Se tiver ele coloca o height ta pagina em auto
+        let containerLista = document.querySelector('.container-lista');
+        if (containerLista.childElementCount > 23) document.querySelector('.container').style.height = "auto";
     }, [listaLocalStorageState]);
 
 
@@ -144,10 +146,10 @@ function ListaMercado() {
         lista.forEach((item, index) => {
             if (lista.length === index + 1) {
                 // Ultimo item ele tira a virgula 
-                listaParaCopia = listaParaCopia + "-" + (index + 1) + " " + (item.nome) + ".";
-
+                listaParaCopia = listaParaCopia + "-" + " " + (item.nome) + ".";
+                // (index + 1) 
             } else {
-                listaParaCopia = listaParaCopia + "-" + (index + 1) + " " + (item.nome) + ", ";
+                listaParaCopia = listaParaCopia + "-" + " " + (item.nome) + ", ";
             }
         })
         navigator.clipboard.writeText(listaParaCopia);
