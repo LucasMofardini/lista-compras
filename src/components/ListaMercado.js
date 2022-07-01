@@ -1,22 +1,21 @@
-import { React, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../style/ListaMercado.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
 import { faTrashCan, faEdit, faCopy } from '@fortawesome/free-regular-svg-icons'
 
-
 function ListaMercado() {
     const listaInicial = [];
+
     const [texto, setTexto] = useState('');
     const [lista, setLista] = useState(listaInicial);
     const [indexEdit, setIndexEdit] = useState();
     const [id, setId] = useState();
-
     const [listaLocalStorageState, setlistaLocalStorageState] = useState(listaInicial);
 
     const input = document.querySelector('#input-lista');
     const btn = document.querySelector('#button-lista');
-    const spanBtnCopiar = document.querySelector(".btn-copiar span");
+    const spanBtnCopiar = document.querySelector("#mensagem-copiado");
 
     useEffect(() => {
         // Primeira vez que uma pessoa entra no site, ele seta o localstorage lista
@@ -43,19 +42,24 @@ function ListaMercado() {
 
         }
 
-        // Verifica se tem mais de 25 itens
+        // Verifica se tem mais de 18 itens
         // Se tiver ele coloca o height ta pagina em auto
-        let containerLista = document.querySelector('.container-lista');
-        if (containerLista.childElementCount > 23) document.querySelector('.container').style.height = "auto";
+        setTimeout(()=>{
+            if (((window.innerHeight * 65) / 100) < document.querySelector('.container-lista').clientHeight){
+                document.querySelector('.container').style.height = "auto";
+            }
+            else{
+                document.querySelector('.container').style.height = "100vh";
+            }
+        });
     }, [listaLocalStorageState]);
-
-
+    
     function pegaValor(e) {
         setTexto(e.target.value);
 
     }
 
-    function btnClicado() {
+    function submitForm() {
 
         // Ve se tem valor para ser editado, se tiver ele faz essa condição
         if (indexEdit || indexEdit === 0) {
@@ -82,8 +86,6 @@ function ListaMercado() {
         setaNoLocalStorageOItem();
         input.value = "";
         setTexto('');
-
-
     }
     function setaNoLocalStorageOItem() {
         if (input.value.length) {
@@ -117,6 +119,7 @@ function ListaMercado() {
 
 
     }
+
     function editarItem(item) {
         const index = lista.findIndex((element) => {
             return element.id === item.id;
@@ -131,6 +134,7 @@ function ListaMercado() {
 
 
     }
+
     function apagarTudo() {
 
         localStorage.lista = "[]";
@@ -138,9 +142,8 @@ function ListaMercado() {
 
         input.value = "";
         setTexto('');
-
-
     }
+
     function copiarLista() {
         let listaParaCopia = "";
         lista.forEach((item, index) => {
@@ -159,29 +162,35 @@ function ListaMercado() {
             spanBtnCopiar.innerText = "";
         }, 2000)
 
-    } return (
+    }
+
+    return (
         <div className='container'>
-            <div className="container-form">
+            <div className={`container-form`}>
                 <div className='container-copiar'>
                     <div className="btn-copiar" onClick={copiarLista}>
                         <FontAwesomeIcon icon={faCopy} />
-                        <span></span>
+                        <span id="mensagem-copiado"></span>
                     </div>
                 </div>
+
                 <h1>Lista de Mercado</h1>
-                <div className='item-enviar'>
-                    <input id="input-lista" onChange={(e) => {
-                        pegaValor(e);
-                    }}></input>
-                    <button id="button-lista" onClick={btnClicado}>Enviar</button>
-                </div>
+                <form onSubmit={(e)=>{
+                        e.preventDefault();
+                        submitForm();
+                        }}>
+                    <div className='item-enviar'>
+                        <input autocomplete="false" id="input-lista" onChange={(e) => {
+                            pegaValor(e);
+                        }}></input>
+                        <button id="button-lista">Enviar</button>
+                    </div>
+                </form>
                 <div className="container-lista">
                     {lista.length ? lista.map((item, key) => {
                         return (
                             <div className='item-lista' key={key}>
-
                                 <span className='item-nome'>
-
                                     {item.nome}
                                 </span>
                                 <div className='item-controles'>
@@ -198,10 +207,7 @@ function ListaMercado() {
                         <div className="container-no-itens">
                             <span> Sem Itens! </span>
                         </div>
-
                     }
-
-
 
                 </div>
                 <div className='container-clear'>
@@ -212,4 +218,5 @@ function ListaMercado() {
         </div >
     );
 };
+
 export default ListaMercado;

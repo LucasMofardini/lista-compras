@@ -17,6 +17,8 @@
     box-shadow: 10px 10px 10px lightgray;
     border-radius: 10px;
     position: relative;
+
+    margin: 20px 0;
 }
 
 h1 {
@@ -109,8 +111,7 @@ h1 {
 .container-clear {
     display: flex;
     justify-content: center;
-
-
+    margin: 10px 0;
 }
 
 .container-clear>button {

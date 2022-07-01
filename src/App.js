@@ -1,5 +1,7 @@
+import React from 'react';
 import './App.css';
 import ListaMercado from './components/ListaMercado.js';
+
 function App() {
   return (
     <ListaMercado />
